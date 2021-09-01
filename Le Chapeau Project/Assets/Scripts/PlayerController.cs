@@ -4,7 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 {
     [HideInInspector]
     public int id;
@@ -21,12 +21,46 @@ public class PlayerController : MonoBehaviour
     public Rigidbody rig;
     public Player photonPlayer;
 
+    [PunRPC]
+    public void Initialize (Player player)
+    {
+        photonPlayer = player;
+        id = player.ActorNumber;
+
+        GameManager.instance.players[id - 1] = this;
+
+        // gives the first player the hat
+        if (id == 1)
+            GameManager.instance.GiveHat(id, true);
+
+        // if this isn't our local player, diable physics as that's
+        // controlled by the user and synced to all other clients
+        if (photonView.IsMine)
+            rig.isKinematic = true;
+    }
+
     void Update()
     {
-        Move();
+        if (PhotonNetwork.IsMasterClient)
+        {
+            if(curHatTime >= GameManager.instance.timeToWin && !GameManager.instance.gameEnd)
+            {
+                GameManager.instance.gameEnd = true;
+                GameManager.instance.photonView.RPC("WinGame", RpcTarget.All, id);
+            }
+        }
 
-        if (Input.GetKeyDown(KeyCode.Space))
-            TryJump();
+        if (photonView.IsMine)
+        {
+            Move();
+
+            if (Input.GetKeyDown(KeyCode.Space))
+                TryJump();
+
+            // track the amount of time we're wearing the hat
+            if (hatObject.activeInHierarchy)
+                curHatTime += Time.deltaTime;
+        }
     }
 
     // move the player along the x and z axis
@@ -48,6 +82,45 @@ public class PlayerController : MonoBehaviour
         if(Physics.Raycast(ray, 0.7f))
         {
             rig.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        }
+    }
+
+    // sets the player's hat active or not
+    public void SetHat (bool hasHat)
+    {
+        hatObject.SetActive(hasHat);
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (!photonView.IsMine)
+            return;
+
+        // did we hit anouther player?
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            // do they have the hat?
+            if (GameManager.instance.GetPlayer(collision.gameObject).id == GameManager.instance.playerWithHat)
+            {
+                // can we get the hat?
+                if (GameManager.instance.CanGetHat())
+                {
+                    // give us the hat
+                    GameManager.instance.photonView.RPC("GiveHat", RpcTarget.All, id, false);
+                }
+            }
+        }
+    }
+
+    public void OnPhotonSerializeView (PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(curHatTime);
+        }
+        else if (stream.IsReading)
+        {
+            curHatTime = (float)stream.ReceiveNext();
         }
     }
 }

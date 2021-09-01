@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         photonView.RPC("ImInGame", RpcTarget.AllBuffered);
     }
 
+    [PunRPC]
     void ImInGame()
     {
         playersInGame++;
@@ -52,6 +53,58 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         // get the player script
         PlayerController playerScript = playerObj.GetComponent<PlayerController>();
+
+        // initialize the player
+        playerScript.photonView.RPC("Initialize", RpcTarget.All, PhotonNetwork.LocalPlayer);
+    }
+
+    public PlayerController GetPlayer (int playerId)
+    {
+        return players.First(x => x.id == playerId);
+    }
+
+    public PlayerController GetPlayer (GameObject playerObj)
+    {
+        return players.First(x => x.gameObject == playerObj);
+    }
+
+    // called when a player hits the hatted player - giving them the hat
+    [PunRPC]
+    public void GiveHat (int playerId, bool initialGive)
+    {
+        // remove the hat from the currently hatted player
+        if (!initialGive)
+            GetPlayer(playerWithHat).SetHat(false);
+
+        // give the hat to the new player
+        playerWithHat = playerId;
+        GetPlayer(playerId).SetHat(true);
+        hatPickupTime = Time.time;
+    }
+
+    //is the player able to take the hat at this current time?
+    public bool CanGetHat()
+    {
+        if (Time.time > hatPickupTime + invincibleDuration)
+            return true;
+        else
+            return false;
+    }
+
+    [PunRPC]
+    void WinGame (int playerId)
+    {
+        gameEnd = true;
+        PlayerController player = GetPlayer(playerId);
+        GameUI.instance.SetWinText(player.photonPlayer.NickName);
+
+        Invoke("GoBackToMenu", 3.0f);
+    }
+
+    void GoBackToMenu()
+    {
+        PhotonNetwork.LeaveRoom();
+        NetworkManager.instance.ChangeScene("Menu");
     }
 
 }

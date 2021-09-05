@@ -40,7 +40,7 @@ public class GameUI : MonoBehaviour
             if (x < PhotonNetwork.PlayerList.Length)
             {
                 container.obj.SetActive(true);
-                container.nameText = PhotonNetwork.PlayerList[x].NickName;
+                container.nameText.text = PhotonNetwork.PlayerList[x].NickName;
                 container.hatTimeSlider.maxValue = GameManager.instance.timeToWin;
             }
             else

@@ -1112,7 +1112,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &434324948
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1515,7 +1515,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 94623307}
   m_HandleRect: {fileID: 0}
@@ -1712,6 +1712,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbc99f813123f45408248ff6637ab1ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerContainers:
+  - obj: {fileID: 415222008}
+    nameText: {fileID: 1434465729}
+    hatTimeSlider: {fileID: 2026593191}
+  - obj: {fileID: 1434063879}
+    nameText: {fileID: 475691968}
+    hatTimeSlider: {fileID: 1683609058}
+  - obj: {fileID: 365651286}
+    nameText: {fileID: 1704987229}
+    hatTimeSlider: {fileID: 706439819}
+  - obj: {fileID: 123410986}
+    nameText: {fileID: 27384017}
+    hatTimeSlider: {fileID: 862000111}
+  winText: {fileID: 434324949}
 --- !u!1 &862000109
 GameObject:
   m_ObjectHideFlags: 0
@@ -1789,7 +1803,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 163960845}
   m_HandleRect: {fileID: 0}
@@ -2610,7 +2624,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 230081187}
   m_HandleRect: {fileID: 0}
@@ -2870,7 +2884,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 1175053963}
   m_HandleRect: {fileID: 0}

@@ -12,19 +12,24 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         // if an instance already exists and it's not this one - destroy us
         if (instance != null && instance != this)
+        {
             gameObject.SetActive(false);
+            Debug.Log("hi");
+        }
+
         else
         {
             // set the instance
             instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
     }
 
     private void Start()
     {
         // connect to the master server
-        PhotonNetwork.ConnectUsingSettings();
+        if (!PhotonNetwork.IsConnected)
+            PhotonNetwork.ConnectUsingSettings();
     }
 
     // attempts to CREATE a room

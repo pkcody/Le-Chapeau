@@ -9,6 +9,7 @@ public class GameUI : MonoBehaviour
 {
     public PlayerUIContainer[] playerContainers;
     public TextMeshProUGUI winText;
+    public TextMeshProUGUI spyText;
 
     // instance
     public static GameUI instance;
@@ -61,6 +62,12 @@ public class GameUI : MonoBehaviour
     {
         winText.gameObject.SetActive(true);
         winText.text = winnerName + " Wins";
+    }
+
+    public void SetSpy (string spyName)
+    {
+        spyText.gameObject.SetActive(true);
+        spyText.text = spyName + " is Arsène Lupin";
     }
 }
 

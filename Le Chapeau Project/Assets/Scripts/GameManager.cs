@@ -80,6 +80,9 @@ public class GameManager : MonoBehaviourPunCallbacks
         playerWithHat = playerId;
         GetPlayer(playerId).SetHat(true);
         hatPickupTime = Time.time;
+        //testing setting spy
+        PlayerController player = GetPlayer(playerId);
+        GameUI.instance.SetSpy(player.photonPlayer.NickName);
     }
 
     //is the player able to take the hat at this current time?

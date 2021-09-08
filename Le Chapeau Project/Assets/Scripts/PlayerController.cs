@@ -60,6 +60,12 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             // track the amount of time we're wearing the hat
             if (hatObject.activeInHierarchy)
                 curHatTime += Time.deltaTime;
+
+          //  if (hatObject.active)
+          //  {
+          //      hatObject = SetHat(hasHat);
+          //      GameUI.instance.SetWinText(hasHat.photonPlayer.NickName);
+           // }
         }
     }
 
